@@ -1,0 +1,28 @@
+{
+  "name": "learnsocket",
+  "version": "1.0.0",
+  "description": "use socket with express ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vino16491/learnSocket.git"
+  },
+  "keywords": [
+    "socket",
+    "express",
+    "html",
+    "nodejs"
+  ],
+  "author": "vino16491",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Vino16491/learnSocket/issues"
+  },
+  "homepage": "https://github.com/Vino16491/learnSocket#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
