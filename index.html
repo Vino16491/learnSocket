@@ -55,12 +55,26 @@
     <script>
         $(function () {
             var socket = io();
+            var msgI = "I M COnnected"
             $('form').submit(function () {
-                socket.emit('chat message', $('#m').val());
+                socket.emit('chat message',  $('#m').val());
                 $('#m').val('');
                 return false;
             });
+
+            $('form').load(function (msg) {
+                msg = 'adadf'
+                socket.emit('connect', msg);
+                return false;
+            })
+
+            socket.on('connect', function (msg) {
+                console.log(msg + 'from connect')
+                $('#messages').append($('<li>').text(msg))
+            });
+
             socket.on('chat message', function (msg) {
+                console.log(msg + 'from chat message')
                 $('#messages').append($('<li>').text(msg));
             });
         });
