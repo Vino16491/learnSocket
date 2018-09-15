@@ -36,6 +36,14 @@
             padding: 10px;
         }
 
+        #serverResponse {
+            position: fixed;
+            bottom: 50px;
+            color: cyan;
+            padding: 10px;
+            background-color: darkred;
+        }
+
         #messages {
             list-style-type: none;
             margin: 0;
@@ -53,42 +61,56 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
+        var socket = io();
+
+        function serverResponseFunction() {
+            console.log('serverResponseFunction');
+            socket.emit('connect', 'you are Connected');
+            return false;
+        };
+
+        function submit(){
+            console.log('submit function')
+        }
         $(function () {
             var socket = io();
-            var msgI = "I M COnnected"
             $('form').submit(function () {
-                socket.emit('chat message',  $('#m').val());
+                socket.emit('chat message', $('#m').val()+ ' sendfromclient ');
                 $('#m').val('');
                 return false;
             });
 
-            $('form').load(function (msg) {
-                msg = 'adadf'
-                socket.emit('connect', msg);
+
+            // message send to server on each click event 
+            $('#serverMesage').click(() => {
+                socket.emit('connect', 'you are Connected');
                 return false;
             })
-
-            socket.on('connect', function (msg) {
-                console.log(msg + 'from connect')
-                $('#messages').append($('<li>').text(msg))
-            });
-
+            //Client Side event trigger
+            socket.on('connect', (msgfromserver) => {
+                $('#serverMessages').append($('<li>').text(msgfromserver + ' server'))
+            })
             socket.on('chat message', function (msg) {
-                console.log(msg + 'from chat message')
                 $('#messages').append($('<li>').text(msg));
             });
+
+            socket.on('disconnect'), (msg) => {
+                $('#serverMessages').append($('<li>').text(msgfromserver + 'from server'))
+            }
         });
     </script>
-    <script>
-        var socket = io();
-    </script>
+
 </head>
 
 <body>
+    
     <ul id="messages"></ul>
+    <ul id="serverMessages" style="background-color:aqua"></ul>
     <form action="">
         <input id="m" autocomplete="off" /><button>Send</button>
     </form>
+<div style="padding:30px;" id="serverMesage">Click to get Server Message</div style="padding:30px;">
+    
 </body>
 
 </html>

@@ -7,13 +7,21 @@ app.get('/', function (req, res) {
 });
 
 io.on('connection', function (socket) {
-    console.log('a user connected');
+
+    socket.on('connect', (msg) => {
+        console.log(msg);
+        io.emit('connect', 'Welcome to Socket' + msg)
+    });
+
+
     socket.on('chat message', function (msg) {
         console.log('message: ' + msg);
-        io.emit('chat message', msg);
+        io.emit('chat message', msg.length+ 'edit');
+        io.emit('connect', 'OK From Server')
     });
     socket.on('disconnect', function () {
         console.log('user disconnected');
+        io.emit('disconnect', 'user disconnected')
     });
 });
 
