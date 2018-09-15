@@ -60,57 +60,50 @@
     </style>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
     <script>
-        var socket = io();
-
-        function serverResponseFunction() {
-            console.log('serverResponseFunction');
-            socket.emit('connect', 'you are Connected');
-            return false;
-        };
-
-        function submit(){
-            console.log('submit function')
-        }
         $(function () {
             var socket = io();
+   /** this will send message to server from client  */
             $('form').submit(function () {
-                socket.emit('chat message', $('#m').val()+ ' sendfromclient ');
+                socket.emit('chat message', $('#m').val());
                 $('#m').val('');
                 return false;
             });
+//ON PAGE LOAD THIS FUNCTION WILL SEN UPDATE THAT IT IS CONNECTED
+            $(document).ready(() => {
+                socket.emit('chat from server', 'server Status ' + new Date());
 
-
-            // message send to server on each click event 
-            $('#serverMesage').click(() => {
-                socket.emit('connect', 'you are Connected');
                 return false;
             })
-            //Client Side event trigger
-            socket.on('connect', (msgfromserver) => {
-                $('#serverMessages').append($('<li>').text(msgfromserver + ' server'))
-            })
+
+            socket.on('chat from server', function (msg) {
+                $('#messagesFromServer').append($('<li>').text(msg));
+            });
+//-----------------------------------------------------------------------------------|
+
+//This function recives and shows mssage from server to all user
             socket.on('chat message', function (msg) {
                 $('#messages').append($('<li>').text(msg));
             });
-
-            socket.on('disconnect'), (msg) => {
-                $('#serverMessages').append($('<li>').text(msgfromserver + 'from server'))
-            }
         });
     </script>
+
 
 </head>
 
 <body>
-    
+    <!-- For server Response -->
+    <ul id="messagesFromServer" style="color:darkgray; background: crimson; padding: 25px;">
+        <li>Server Message</li>
+    </ul>
+
+
+
     <ul id="messages"></ul>
-    <ul id="serverMessages" style="background-color:aqua"></ul>
     <form action="">
         <input id="m" autocomplete="off" /><button>Send</button>
     </form>
-<div style="padding:30px;" id="serverMesage">Click to get Server Message</div style="padding:30px;">
-    
 </body>
 
 </html>
